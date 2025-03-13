@@ -1396,53 +1396,6 @@
 			"name": "End to End testing Copy",
 			"item": [
 				{
-					"name": "[3]authorized Copy",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "ba0972f6-73e1-410c-824d-542ed689debb",
-								"exec": [
-									"pm.test(\"status code is 201\",()=>{",
-									"    pm.response.to.have.status(201);",
-									"});",
-									"",
-									"",
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"id": "53373eb6-3557-4a69-a809-eb70c7978a35",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "basic",
-							"basic": {
-								"username": "TeamNumpy_05",
-								"password": "sdetNumpy@05"
-							}
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\"userName\" : \"TeamNumpy5\",\n\"password\" : \"sdetNumpy@05\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "https://bookstore.toolsqa.com/Account/v1/GenerateToken"
-					},
-					"response": []
-				},
-				{
 					"name": "[4]authorized",
 					"event": [
 						{
@@ -1581,6 +1534,11 @@
 									"var allIsbns = jsonResponse.books.map(book => book.isbn);",
 									"var specificIsbn = allIsbns[1];",
 									"pm.environment.set(\"second_isbn\",specificIsbn);",
+									"var third_isbn = allIsbns[2];",
+									"pm.environment.set(\"third_isbn\",third_isbn)",
+									"var fourth_isbn = allIsbns[3];",
+									"pm.environment.set(\"fourth_isbn\",fourth_isbn)",
+									"",
 									"pm.environment.set(\"all_isbns\", JSON.stringify(allIsbns));"
 								],
 								"type": "text/javascript",
@@ -1741,17 +1699,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
-						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\": \"{{userId}}\",\n  \"collectionOfIsbns\": [\n    {\n      \"isbn\": \"{{first_isbn}}\"\n    },\n    {\n      \"isbn\": \"{{second_isbn}}\"\n    }\n  ]\n}",
+							"raw": "{\n  \"userId\": \"{{userId}}\",\n  \"collectionOfIsbns\": [\n    {\n      \"isbn\": \"{{third_isbn}}\"\n    },\n    {\n      \"isbn\": \"{{second_isbn}}\"\n    }\n  ]\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1833,17 +1785,11 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
-						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"userId\": \"{{userId}}\",\n  \"isbn\": \"{{second_isbn}}\"\n}",
+							"raw": "{\n  \"userId\": \"{{userId}}\",\n  \"isbn\": \"{{fourth_isbn}}\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1851,74 +1797,6 @@
 							}
 						},
 						"url": "{{BaseUrl}}/BookStore/v1/Books/{{first_isbn}}"
-					},
-					"response": []
-				},
-				{
-					"name": "[11]Delete Multiple book",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"id": "682cfa28-cfff-4347-b02b-81973423b2c0",
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"id": "3bac5c94-2fa0-42ba-82a5-8b8ebd0d8140",
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"id": "1f577e97-ccf8-4c39-9da1-0247f5215ee6",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
-						},
-						"method": "DELETE",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BaseUrl}}/BookStore/v1/Books?UserId={{userId}}",
-							"host": [
-								"{{BaseUrl}}"
-							],
-							"path": [
-								"BookStore",
-								"v1",
-								"Books"
-							],
-							"query": [
-								{
-									"key": "UserId",
-									"value": "{{userId}}"
-								}
-							]
-						}
 					},
 					"response": []
 				},
@@ -1953,12 +1831,6 @@
 						"disableBodyPruning": true
 					},
 					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": {
-								"token": "{{token}}"
-							}
-						},
 						"method": "DELETE",
 						"header": [],
 						"body": {
@@ -1971,6 +1843,68 @@
 							}
 						},
 						"url": "{{BaseUrl}}/BookStore/v1/Book"
+					},
+					"response": []
+				},
+				{
+					"name": "[11]Delete Multiple book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "682cfa28-cfff-4347-b02b-81973423b2c0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3bac5c94-2fa0-42ba-82a5-8b8ebd0d8140",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "1f577e97-ccf8-4c39-9da1-0247f5215ee6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/BookStore/v1/Books?UserId={{userId}}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"BookStore",
+								"v1",
+								"Books"
+							],
+							"query": [
+								{
+									"key": "UserId",
+									"value": "{{userId}}"
+								}
+							]
+						}
 					},
 					"response": []
 				},
@@ -2020,95 +1954,149 @@
 				}
 			],
 			"id": "6f4687bb-df47-4fa1-9dd5-3da3b759d0c8",
+			"auth": {
+				"type": "bearer",
+				"bearer": {
+					"token": "{{auth_token}}"
+				}
+			},
 			"event": [
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "e7c9e6e3-3497-484a-b931-acda30dfb7b6",
+						"id": "dd57ac36-f22e-4cae-9f5d-62ad5df18dde",
 						"type": "text/javascript",
 						"packages": {},
 						"exec": [
-							"// Generate a random number and append it to the username",
-							"const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999",
-							"//const username = `TeamNumpy${randomNumber}`;",
-							"var username = 'TeamNumpy*0123';",
+							"// Check if the user has already been created",
+							"if (!pm.environment.get(\"user_created\")) {",
+							"    // If not, proceed to create the user first",
+							"    createUser();",
+							"} else {",
+							"    // If user is already created, just generate the token",
+							"    console.log(\"User already created, proceeding to get token.\");",
+							"    var username = pm.environment.get(\"userName\"); // Use the stored username",
+							"    generateToken(username);",
+							"}",
 							"",
-							"console.log(\"Generated Username:\", username);",
+							"// Method to create the user",
+							"function createUser() {",
+							"    // Generate a random number and append it to the username",
+							"    const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999",
+							"    var username = `TeamNumpy${randomNumber}`;",
 							"",
-							"pm.sendRequest({",
-							"    url: 'https://bookstore.toolsqa.com/Account/v1/User',",
-							"    method: 'POST',",
-							"    header: {",
-							"        'Content-Type': 'application/json'",
-							"    },",
-							"    body: {",
-							"        mode: 'raw',",
-							"        raw: JSON.stringify({",
-							"            \"userName\": username,",
-							"            \"password\": \"sdetNumpy@05\"",
-							"        })",
-							"    }",
-							"}, function (err, res) {",
-							"    if (err) {",
-							"        console.log(\"Error during user creation:\", err);",
-							"        return;",
-							"    }",
+							"    console.log(\"Generated Username:\", username);",
 							"",
-							"       console.log(\"User Creation Status Code:\", res.code); // Use res.code",
-							"    console.log(\"User Creation Response Body:\", res.raw); // Use res.raw",
-							"    console.log(\"User Creation Response JSON:\", res.json());",
+							"    // Send request to create user",
+							"    pm.sendRequest({",
+							"        url: 'https://bookstore.toolsqa.com/Account/v1/User',",
+							"        method: 'POST',",
+							"        header: {",
+							"            'Content-Type': 'application/json'",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify({",
+							"                \"userName\": username,",
+							"                \"password\": \"sdetNumpy@05\"",
+							"            })",
+							"        }",
+							"    }, function (err, res) {",
+							"        if (err) {",
+							"            console.log(\"Error during user creation:\", err);",
+							"            return;",
+							"        }",
 							"",
-							"    if (res.code === 201||res.code===200) {",
-							"        console.log(\"User created successfully, proceeding to get token.\");",
-							"         var userName = res.json().username;",
-							"          pm.environment.set(\"userName\", userName);",
-							"          var user_ID= res.json().userID;",
-							"          pm.environment.set(\"user_ID\", user_ID);",
-							"        ",
+							"        console.log(\"User Creation Status Code:\", res.code); // Use res.code",
+							"        console.log(\"User Creation Response Body:\", res.raw); // Use res.raw",
+							"        console.log(\"User Creation Response JSON:\", res.json());",
 							"",
-							"        pm.sendRequest({",
-							"            url: 'https://bookstore.toolsqa.com/Account/v1/GenerateToken',",
-							"            method: 'POST',",
-							"            header: {",
-							"                'Content-Type': 'application/json'",
-							"            },",
-							"            body: {",
-							"                mode: 'raw',",
-							"                raw: JSON.stringify({",
-							"                    \"userName\": username, // Use the stored username",
-							"                    \"password\": \"sdetNumpy@05\"",
-							"                })",
-							"            }",
-							"        }, function (err, res) {",
-							"            if (err) {",
-							"                console.log(\"Error getting token:\", err);",
-							"                return;",
-							"            }",
+							"        if (res.code === 201 || res.code === 200) {",
+							"            console.log(\"User created successfully, proceeding to get token.\");",
+							"            ",
+							"            var userName = res.json().username;",
+							"            pm.environment.set(\"userName\", userName);",
+							"            var user_ID = res.json().userID;",
+							"            pm.environment.set(\"user_ID\", user_ID);",
 							"",
-							"            console.log(\"Token Generation Response Body:\", res.json());",
+							"            // Save the flag to the environment variable to indicate that user creation is done",
+							"            pm.environment.set(\"user_created\", true);",
 							"",
-							"            if (res.code === 200) {",
-							"                var auth_token = res.json().token;",
-							"                pm.environment.set(\"auth_token\", auth_token);",
-							"                console.log(\"Token generated and saved to environment.\");",
-							"            } else {",
-							"                console.log(\"Token generation failed. Response:\", res.json());",
-							"            }",
-							"        });",
-							"    } else {",
-							"        console.log(\"User creation failed. Response:\", res.json());",
-							"    }",
-							"});"
+							"            // Now generate token",
+							"            generateToken(username);",
+							"        } else {",
+							"            console.log(\"User creation failed. Response:\", res.json());",
+							"        }",
+							"    });",
+							"}",
+							"",
+							"// Method to generate the token",
+							"function generateToken(username) {",
+							"    pm.sendRequest({",
+							"        url: 'https://bookstore.toolsqa.com/Account/v1/GenerateToken',",
+							"        method: 'POST',",
+							"        header: {",
+							"            'Content-Type': 'application/json'",
+							"        },",
+							"        body: {",
+							"            mode: 'raw',",
+							"            raw: JSON.stringify({",
+							"                \"userName\": username, // Use the stored username",
+							"                \"password\": \"sdetNumpy@05\"",
+							"            })",
+							"        }",
+							"    }, function (err, res) {",
+							"        if (err) {",
+							"            console.log(\"Error getting token:\", err);",
+							"            return;",
+							"        }",
+							"",
+							"        console.log(\"Token Generation Response Body:\", res.json());",
+							"",
+							"        if (res.code === 200) {",
+							"            var auth_token = res.json().token;",
+							"            pm.environment.set(\"auth_token\", auth_token);",
+							"            console.log(\"Token generated and saved to environment.\");",
+							"        } else {",
+							"            console.log(\"Token generation failed. Response:\", res.json());",
+							"        }",
+							"    });",
+							"}"
 						]
 					}
 				},
 				{
 					"listen": "test",
 					"script": {
-						"id": "712808e7-bb68-4166-979d-eeed79bc2df6",
+						"id": "4973c4f5-4c78-4a7f-a8b9-a89982b27fc9",
 						"type": "text/javascript",
 						"packages": {},
 						"exec": [
+							"",
+							"pm.test(\"Content-Type is application/json (if present)\", function () {",
+							"    const contentType = pm.response.headers.get('Content-Type');",
+							"    ",
+							"    // Only check Content-Type if it's present",
+							"    if (contentType) {",
+							"        pm.expect(contentType).to.include('application/json');",
+							"    } else {",
+							"        console.log(\"Content-Type header is not present (expected for 204 No Content)\");",
+							"    }",
+							"});",
+							"",
+							"pm.test(\"Response header has Connection\", function () {",
+							"    pm.expect(pm.response.headers.has(\"Connection\")).to.be.true;",
+							" });   ",
+							"pm.test(\"Response header has Server\", function () {",
+							"    pm.expect(pm.response.headers.has(\"Server\")).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Response header has X-Powered-By\", function () {",
+							"    pm.expect(pm.response.headers.get(\"X-Powered-By\")).to.equal(\"Express\");",
+							"});",
+							"pm.test(\"Response header has ETag\", function () {",
+							"    pm.expect(pm.response.headers.has(\"ETag\")).to.be.true;",
+							"});",
 							"",
 							"",
 							"",
