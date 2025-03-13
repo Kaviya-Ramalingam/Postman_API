@@ -1393,6 +1393,734 @@
 			]
 		},
 		{
+			"name": "End to End testing Copy",
+			"item": [
+				{
+					"name": "[3]authorized Copy",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba0972f6-73e1-410c-824d-542ed689debb",
+								"exec": [
+									"pm.test(\"status code is 201\",()=>{",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "53373eb6-3557-4a69-a809-eb70c7978a35",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": {
+								"username": "TeamNumpy_05",
+								"password": "sdetNumpy@05"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"userName\" : \"TeamNumpy5\",\n\"password\" : \"sdetNumpy@05\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://bookstore.toolsqa.com/Account/v1/GenerateToken"
+					},
+					"response": []
+				},
+				{
+					"name": "[4]authorized",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba0972f6-73e1-410c-824d-542ed689debb",
+								"exec": [
+									"pm.test(\"status code is 200\",()=>{",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "2ceecf42-45e0-4a89-9b9a-baa5fcd374d9",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\"userName\" : \"{{userName}}\",\n\"password\" : \"sdetNumpy@05\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/Account/v1/Authorized"
+					},
+					"response": []
+				},
+				{
+					"name": "[5]Get user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba0972f6-73e1-410c-824d-542ed689debb",
+								"exec": [
+									"pm.test(\"status code is 201\",()=>{",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "7087242f-6a48-4795-a78c-fbb0e5e9566f",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "Basic VGVhbU51bXB5NTpzZGV0TnVtcHlAMDU="
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRlYW1OdW1weTUiLCJwYXNzd29yZCI6InNkZXROdW1weUAwNSIsImlhdCI6MTc0MTYxODA5Nn0.PmFSmQ7q8vOG33qEHQeIs2gvWXWNjvILYk4AHykIoj0"
+							}
+						],
+						"url": "https://bookstore.toolsqa.com/Account/v1/User/{{userId}}"
+					},
+					"response": []
+				},
+				{
+					"name": "[6]Get Books",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "682cfa28-cfff-4347-b02b-81973423b2c0",
+								"exec": [
+									"// Stores the first ISBN from the response data in an environment variable",
+									"var jsonResponse = pm.response.json();",
+									"var isbn = jsonResponse.books[0].isbn;",
+									"pm.environment.set(\"first_isbn\", isbn);",
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response content type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.books).to.be.an('array');",
+									"    ",
+									"    pm.expect(responseData.books[0].isbn).to.be.a('string');",
+									"    pm.expect(responseData.books[0].title).to.be.a('string');",
+									"    pm.expect(responseData.books[0].subTitle).to.be.a('string');",
+									"    pm.expect(responseData.books[0].author).to.be.a('string');",
+									"    pm.expect(responseData.books[0].publish_date).to.exist;",
+									"    pm.expect(responseData.books[0].publisher).to.be.a('string');",
+									"    pm.expect(responseData.books[0].pages).to.be.a('number');",
+									"    pm.expect(responseData.books[0].description).to.be.a('string');",
+									"    pm.expect(responseData.books[0].website).to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"ISBN is stored in an environment variable\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.books[0].isbn).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Presence of specific header in the response\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.exist;",
+									"});",
+									"// Store all the ISBNs from the response data in an environment variable",
+									"var jsonResponse = pm.response.json();",
+									"var allIsbns = jsonResponse.books.map(book => book.isbn);",
+									"var specificIsbn = allIsbns[1];",
+									"pm.environment.set(\"second_isbn\",specificIsbn);",
+									"pm.environment.set(\"all_isbns\", JSON.stringify(allIsbns));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3bac5c94-2fa0-42ba-82a5-8b8ebd0d8140",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "c1e71302-9c41-491e-b36f-3673b2d72c59",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{BaseUrl}}/BookStore/v1/Books"
+					},
+					"response": []
+				},
+				{
+					"name": "[7]get book by isbn",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "682cfa28-cfff-4347-b02b-81973423b2c0",
+								"exec": [
+									"",
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response content type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.books).to.be.an('array');",
+									"    ",
+									"    pm.expect(responseData.books[0].isbn).to.be.a('string');",
+									"    pm.expect(responseData.books[0].title).to.be.a('string');",
+									"    pm.expect(responseData.books[0].subTitle).to.be.a('string');",
+									"    pm.expect(responseData.books[0].author).to.be.a('string');",
+									"    pm.expect(responseData.books[0].publish_date).to.exist;",
+									"    pm.expect(responseData.books[0].publisher).to.be.a('string');",
+									"    pm.expect(responseData.books[0].pages).to.be.a('number');",
+									"    pm.expect(responseData.books[0].description).to.be.a('string');",
+									"    pm.expect(responseData.books[0].website).to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"ISBN is stored in an environment variable\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.books[0].isbn).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Presence of specific header in the response\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.exist;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3bac5c94-2fa0-42ba-82a5-8b8ebd0d8140",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "c65ac591-7339-4bd5-903b-c2c3624f8261",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://bookstore.toolsqa.com/BookStore/v1/Book?ISBN={{first_isbn}}",
+							"protocol": "https",
+							"host": [
+								"bookstore",
+								"toolsqa",
+								"com"
+							],
+							"path": [
+								"BookStore",
+								"v1",
+								"Book"
+							],
+							"query": [
+								{
+									"key": "ISBN",
+									"value": "{{first_isbn}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[8]Add book",
+					"id": "6358d3a1-1b1e-498d-85c6-f067e2340deb",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"{{userId}}\",\n  \"collectionOfIsbns\": [\n    {\n      \"isbn\": \"{{first_isbn}}\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/BookStore/v1/Books"
+					},
+					"response": []
+				},
+				{
+					"name": "[9]Add Multiple book",
+					"id": "f9d9b378-66cc-4f66-9c51-362b5afaabc3",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"{{userId}}\",\n  \"collectionOfIsbns\": [\n    {\n      \"isbn\": \"{{first_isbn}}\"\n    },\n    {\n      \"isbn\": \"{{second_isbn}}\"\n    }\n  ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/BookStore/v1/Books"
+					},
+					"response": []
+				},
+				{
+					"name": "[10]update book by isbn",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "682cfa28-cfff-4347-b02b-81973423b2c0",
+								"exec": [
+									"",
+									"",
+									"pm.test(\"Response status code is 200\", function () {",
+									"  pm.response.to.have.status(200);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response content type is application/json\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Response has the required fields\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.books).to.be.an('array');",
+									"    ",
+									"    pm.expect(responseData.books[0].isbn).to.be.a('string');",
+									"    pm.expect(responseData.books[0].title).to.be.a('string');",
+									"    pm.expect(responseData.books[0].subTitle).to.be.a('string');",
+									"    pm.expect(responseData.books[0].author).to.be.a('string');",
+									"    pm.expect(responseData.books[0].publish_date).to.exist;",
+									"    pm.expect(responseData.books[0].publisher).to.be.a('string');",
+									"    pm.expect(responseData.books[0].pages).to.be.a('number');",
+									"    pm.expect(responseData.books[0].description).to.be.a('string');",
+									"    pm.expect(responseData.books[0].website).to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"ISBN is stored in an environment variable\", function () {",
+									"    const responseData = pm.response.json();",
+									"    pm.expect(responseData.books[0].isbn).to.exist;",
+									"});",
+									"",
+									"",
+									"pm.test(\"Presence of specific header in the response\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.exist;",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3bac5c94-2fa0-42ba-82a5-8b8ebd0d8140",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "5dad51a4-d92a-4f30-85f7-9bb7a7c8abe1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"userId\": \"{{userId}}\",\n  \"isbn\": \"{{second_isbn}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/BookStore/v1/Books/{{first_isbn}}"
+					},
+					"response": []
+				},
+				{
+					"name": "[11]Delete Multiple book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "682cfa28-cfff-4347-b02b-81973423b2c0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3bac5c94-2fa0-42ba-82a5-8b8ebd0d8140",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "1f577e97-ccf8-4c39-9da1-0247f5215ee6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/BookStore/v1/Books?UserId={{userId}}",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"BookStore",
+								"v1",
+								"Books"
+							],
+							"query": [
+								{
+									"key": "UserId",
+									"value": "{{userId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "[12]delete book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "682cfa28-cfff-4347-b02b-81973423b2c0",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "3bac5c94-2fa0-42ba-82a5-8b8ebd0d8140",
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "80106ad1-cbc8-46c7-add5-fd927cce42e1",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"isbn\": \"{{first_isbn}}\",\n  \"userId\": \"{{userId}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{BaseUrl}}/BookStore/v1/Book"
+					},
+					"response": []
+				},
+				{
+					"name": "[13]delete user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba0972f6-73e1-410c-824d-542ed689debb",
+								"exec": [
+									"pm.test(\"status code is 201\",()=>{",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"id": "b79eabf1-8485-46c4-8329-d131947378b6",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "accept",
+								"value": "application/json"
+							},
+							{
+								"key": "authorization",
+								"value": "Basic VGVhbU51bXB5NTpzZGV0TnVtcHlAMDU="
+							},
+							{
+								"key": "Authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyTmFtZSI6IlRlYW1OdW1weTUiLCJwYXNzd29yZCI6InNkZXROdW1weUAwNSIsImlhdCI6MTc0MTYxODA5Nn0.PmFSmQ7q8vOG33qEHQeIs2gvWXWNjvILYk4AHykIoj0"
+							}
+						],
+						"url": "https://bookstore.toolsqa.com/Account/v1/User/{{user_ID}}"
+					},
+					"response": []
+				}
+			],
+			"id": "6f4687bb-df47-4fa1-9dd5-3da3b759d0c8",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e7c9e6e3-3497-484a-b931-acda30dfb7b6",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"// Generate a random number and append it to the username",
+							"const randomNumber = Math.floor(Math.random() * 1000); // Generates a number between 0 and 999",
+							"//const username = `TeamNumpy${randomNumber}`;",
+							"var username = 'TeamNumpy*0123';",
+							"",
+							"console.log(\"Generated Username:\", username);",
+							"",
+							"pm.sendRequest({",
+							"    url: 'https://bookstore.toolsqa.com/Account/v1/User',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'Content-Type': 'application/json'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            \"userName\": username,",
+							"            \"password\": \"sdetNumpy@05\"",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (err) {",
+							"        console.log(\"Error during user creation:\", err);",
+							"        return;",
+							"    }",
+							"",
+							"       console.log(\"User Creation Status Code:\", res.code); // Use res.code",
+							"    console.log(\"User Creation Response Body:\", res.raw); // Use res.raw",
+							"    console.log(\"User Creation Response JSON:\", res.json());",
+							"",
+							"    if (res.code === 201||res.code===200) {",
+							"        console.log(\"User created successfully, proceeding to get token.\");",
+							"         var userName = res.json().username;",
+							"          pm.environment.set(\"userName\", userName);",
+							"          var user_ID= res.json().userID;",
+							"          pm.environment.set(\"user_ID\", user_ID);",
+							"        ",
+							"",
+							"        pm.sendRequest({",
+							"            url: 'https://bookstore.toolsqa.com/Account/v1/GenerateToken',",
+							"            method: 'POST',",
+							"            header: {",
+							"                'Content-Type': 'application/json'",
+							"            },",
+							"            body: {",
+							"                mode: 'raw',",
+							"                raw: JSON.stringify({",
+							"                    \"userName\": username, // Use the stored username",
+							"                    \"password\": \"sdetNumpy@05\"",
+							"                })",
+							"            }",
+							"        }, function (err, res) {",
+							"            if (err) {",
+							"                console.log(\"Error getting token:\", err);",
+							"                return;",
+							"            }",
+							"",
+							"            console.log(\"Token Generation Response Body:\", res.json());",
+							"",
+							"            if (res.code === 200) {",
+							"                var auth_token = res.json().token;",
+							"                pm.environment.set(\"auth_token\", auth_token);",
+							"                console.log(\"Token generated and saved to environment.\");",
+							"            } else {",
+							"                console.log(\"Token generation failed. Response:\", res.json());",
+							"            }",
+							"        });",
+							"    } else {",
+							"        console.log(\"User creation failed. Response:\", res.json());",
+							"    }",
+							"});"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "712808e7-bb68-4166-979d-eeed79bc2df6",
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"",
+							"",
+							"",
+							"",
+							"",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
 			"name": "end to end testing new",
 			"item": [
 				{
